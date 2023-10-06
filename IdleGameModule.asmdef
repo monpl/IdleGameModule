@@ -1,0 +1,8 @@
+{
+  "name": "IdleGameModule",
+  "references": [
+    "UniTask",
+    "Unity.Advertisement.IosSupport",
+    "BigDouble"
+  ]
+}

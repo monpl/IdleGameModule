@@ -1,0 +1,20 @@
+{
+  "name": "com.monpl.idlegamemodule",
+  "displayName": "MonsterPlanet's Idle Game Module",
+  "version": "0.1.0",
+  "unity": "2022.3",
+  "description": "A module created to easily use libraries commonly used in idle games.",
+  "dependencies": {
+  },
+  "license": "MIT",
+  "author": {
+    "name": "MonsterPlanet",
+    "email": "kyc521@monsterplanet.co.kr",
+    "url": "https://monsterplanet.co.kr"
+  },
+  "homepage": "https://monsterplanet.co.kr",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:monpl/com.monpl.ui.git"
+  }
+}
