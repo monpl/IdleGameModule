@@ -74,14 +74,13 @@ namespace IdleGameModule.TheBackend
             
             SendQueue.Enqueue(Backend.UPost.GetPostList, postType, limit, bro =>
             {
-                if (bro.IsSuccess())
-                {
-                    completion.TrySetResult(JsonToPostDataArray(postType, bro.GetReturnValuetoJSON()));
-                }
-                else
+                if (!bro.IsSuccess())
                 {
                     completion.TrySetException(bro.CreateException("Get Post Error"));
+                    return;
                 }
+
+                completion.TrySetResult(JsonToPostDataArray(postType, bro.GetReturnValuetoJSON()));
             });
 
             return completion.Task;
@@ -99,14 +98,13 @@ namespace IdleGameModule.TheBackend
             
             SendQueue.Enqueue(Backend.UPost.ReceivePostItem, postType, inDate, bro =>
             {
-                if (bro.IsSuccess())
-                {
-                    completion.TrySetResult();
-                }
-                else
+                if (!bro.IsSuccess())
                 {
                     completion.TrySetException(bro.CreateException("Receive One Error"));
+                    return;
                 }
+
+                completion.TrySetResult();
             });
 
             return completion.Task;
@@ -120,21 +118,21 @@ namespace IdleGameModule.TheBackend
         public UniTask ReceiveAll(PostType postType)
         {
             var completion = new UniTaskCompletionSource();
-            
+
             SendQueue.Enqueue(Backend.UPost.ReceivePostItemAll, postType, bro =>
             {
-                if (bro.IsSuccess())
-                {
-                    completion.TrySetResult();
-                }
-                else
+                if (!bro.IsSuccess())
                 {
                     // 더 이상 수령할 우편이 없는 경우는 그냥 패스
                     if (bro.GetStatusCode() == "404" && bro.GetErrorCode() == "NotFoundException")
                         completion.TrySetResult();
                     else
                         completion.TrySetException(bro.CreateException("Receive All Error"));
+
+                    return;
                 }
+
+                completion.TrySetResult();
             });
 
             return completion.Task;

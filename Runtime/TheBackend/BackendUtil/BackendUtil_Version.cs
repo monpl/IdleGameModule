@@ -48,22 +48,21 @@ namespace IdleGameModule.TheBackend
             SendQueue.Enqueue(Backend.Utils.GetLatestVersion, bro =>
             {
                 // 이후 처리
-                if (bro.IsSuccess())
-                {
-                    var json = bro.GetReturnValuetoJSON();
-                    var versionStr = json["version"].ToString();
-                    var updateType = int.Parse(json["type"].ToString());
-
-                    completion.SetResultIfNotNull(GetGameVersionOrNull(versionStr, updateType));
-                }
-                else
+                if (!bro.IsSuccess())
                 {
 #if UNITY_EDITOR
                     completion.SetResultIfNotNull(GetGameVersionOrNull(Application.version, 2));
 #else
                     completion.TrySetException(bro.CreateException("LatestVersion"));
 #endif
+                    return;
                 }
+
+                var json = bro.GetReturnValuetoJSON();
+                var versionStr = json["version"].ToString();
+                var updateType = int.Parse(json["type"].ToString());
+
+                completion.SetResultIfNotNull(GetGameVersionOrNull(versionStr, updateType));
             });
 
             return completion.Task;

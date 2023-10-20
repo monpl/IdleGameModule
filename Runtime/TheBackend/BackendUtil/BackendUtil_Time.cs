@@ -16,7 +16,7 @@ namespace IdleGameModule.TheBackend
         private const int _normalServerTimeInterval = 600;
         private const int _errorServerTimeInterval = 60;
         private const int _firstErrorServerTimeInterval = 5;
-        
+
         private readonly Stopwatch _stopwatch = new();
 
         private DateTime _lastServerTimeUtc = DateTime.MinValue;
@@ -49,11 +49,11 @@ namespace IdleGameModule.TheBackend
         {
             if (_cancel != null)
                 return;
-            
+
             _cancel = new CancellationTokenSource();
             RefreshServerTime().Forget();
         }
-        
+
         /// <summary>
         /// 내부적으로 서버 시간을 업데이트 하는 타이머 중지
         /// </summary>
@@ -101,17 +101,16 @@ namespace IdleGameModule.TheBackend
 
             SendQueue.Enqueue(Backend.Utils.GetServerTime, bro =>
             {
-                if (bro.IsSuccess())
-                {
-                    var timeStr = bro.GetReturnValuetoJSON()["utcTime"].ToString();
-                    var utcTime = DateTime.Parse(timeStr).ToUniversalTime();
-
-                    completion.TrySetResult(utcTime);
-                }
-                else
+                if (!bro.IsSuccess())
                 {
                     completion.TrySetException(bro.CreateException("서버 타임 불러오기 실패!"));
+                    return;
                 }
+
+                var timeStr = bro.GetReturnValuetoJSON()["utcTime"].ToString();
+                var utcTime = DateTime.Parse(timeStr).ToUniversalTime();
+
+                completion.TrySetResult(utcTime);
             });
 
             return completion.Task;

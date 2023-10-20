@@ -36,40 +36,39 @@ namespace IdleGameModule.TheBackend
 
             SendQueue.Enqueue(Backend.Notice.NoticeList, bro =>
             {
-                if (bro.IsSuccess())
-                {
-                    var json = bro.Rows();
-                    var ret = new NoticeData[json.Count];
-                    var readNoticeList = GetReadNoticeList();
-
-                    for (var i = 0; i < json.Count; ++i)
-                    {
-                        var curJson = json[i];
-                        var isPublic = curJson.GetString("isPublic") == "y";
-                        var uuid = curJson.GetString("uuid");
-
-                        ret[i] = new NoticeData
-                        {
-                            title = curJson.GetString("title").Replace("\\n", "\n"),
-                            content = curJson.GetString("content").Replace("\\n", "\n"),
-                            postingDate = DateTime.Parse(curJson.GetString("postingDate")),
-                            isPublic = isPublic,
-                            imageKey = curJson.GetString("imageKey"),
-                            inDate = curJson.GetString("inDate"),
-                            uuid = uuid,
-                            linkUrl = curJson.GetString("linkUrl"),
-                            isRead = readNoticeList.Contains(uuid),
-                        };
-                    }
-
-                    RemoveDeletedReadNoticeList(readNoticeList, ret);
-
-                    completion.TrySetResult(ret);
-                }
-                else
+                if (!bro.IsSuccess())
                 {
                     completion.TrySetException(bro.CreateException("Notice Load Error"));
+                    return;
                 }
+
+                var json = bro.Rows();
+                var ret = new NoticeData[json.Count];
+                var readNoticeList = GetReadNoticeList();
+
+                for (var i = 0; i < json.Count; ++i)
+                {
+                    var curJson = json[i];
+                    var isPublic = curJson.GetString("isPublic") == "y";
+                    var uuid = curJson.GetString("uuid");
+
+                    ret[i] = new NoticeData
+                    {
+                        title = curJson.GetString("title").Replace("\\n", "\n"),
+                        content = curJson.GetString("content").Replace("\\n", "\n"),
+                        postingDate = DateTime.Parse(curJson.GetString("postingDate")),
+                        isPublic = isPublic,
+                        imageKey = curJson.GetString("imageKey"),
+                        inDate = curJson.GetString("inDate"),
+                        uuid = uuid,
+                        linkUrl = curJson.GetString("linkUrl"),
+                        isRead = readNoticeList.Contains(uuid),
+                    };
+                }
+
+                RemoveDeletedReadNoticeList(readNoticeList, ret);
+
+                completion.TrySetResult(ret);
             });
 
             return completion.Task;
@@ -78,7 +77,7 @@ namespace IdleGameModule.TheBackend
         /// <summary>
         /// 공지사항을 읽을때 호출 ( 읽은 리스트에 추가 )
         /// </summary>
-        /// <param name="uuid"></param>
+        /// <param name="uuid">공지사항의 uuid</param>
         public void AddReadList(string uuid)
         {
             var list = GetReadNoticeList();
