@@ -55,6 +55,7 @@ namespace IdleGameModule.TheBackend
                 if (int.TryParse(jsonData["N"].ToString(), out var result))
                     return result;
             }
+
             if (jsonData.ContainsKey("S"))
             {
                 if (int.TryParse(GetString(jsonData), out var result))
@@ -133,7 +134,7 @@ namespace IdleGameModule.TheBackend
 
         // --------
         // double
-        
+
         public static double GetDouble(this JsonData jsonData, string key, double defaultValue = 0d)
         {
             if (jsonData.ContainsKey(key))
@@ -159,12 +160,12 @@ namespace IdleGameModule.TheBackend
 
             return defaultValue;
         }
-        
+
         public static double GetDoubleWithString(this JsonData jsonData, string key, double defaultValue = 0)
         {
             return jsonData.ContainsKey(key) ? double.Parse(jsonData.GetString(key), CultureInfo.InvariantCulture) : defaultValue;
         }
-        
+
         public static double GetDoubleInObject(this JsonData jsonData, string key, double defaultValue = 0)
         {
             return jsonData.ContainsKey("M") ? jsonData["M"].GetDouble(key, defaultValue) : defaultValue;
@@ -210,9 +211,9 @@ namespace IdleGameModule.TheBackend
         // string
         public static string GetString(this JsonData jsonData)
         {
-            if(jsonData.ContainsKey("S") == false) 
+            if (jsonData.ContainsKey("S") == false)
                 return "";
-                
+
             return jsonData["S"]?.ToString();
         }
 
@@ -227,7 +228,7 @@ namespace IdleGameModule.TheBackend
 
             return jsonData[key].ContainsKey("M") ? GetStringInObject(jsonData, key, defaultValue) : defaultValue;
         }
-        
+
         public static string GetStringInDic(this JsonData jsonData, string key, string defaultValue = "")
         {
             return jsonData.ContainsKey(key) ? jsonData[key].ToString() : defaultValue;
@@ -264,6 +265,7 @@ namespace IdleGameModule.TheBackend
                 if (bool.TryParse(jsonData["BOOL"].ToString(), out var result))
                     return result;
             }
+
             if (jsonData.ContainsKey("S"))
             {
                 if (bool.TryParse(GetString(jsonData), out var result))

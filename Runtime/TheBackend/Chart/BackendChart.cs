@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using BackEnd;
 using Cysharp.Threading.Tasks;
@@ -88,11 +87,8 @@ namespace IdleGameModule.TheBackend
                 // 서버에서 받아오기
                 SendQueue.Enqueue(Backend.Chart.GetOneChartAndSaveV2, cardData.selectedChartFileId.ToString(), bro =>
                 {
-                    if (!bro.IsSuccess())
-                    {
-                        completion.TrySetException(bro.CreateException("Failed download chart.." + cardData.chartName));
+                    if (!bro.CheckSuccess(completion, $"Failed download chart..{cardData.chartName}"))
                         return;
-                    }
 
                     chartData.jsonData = bro.Rows();
                     completion.TrySetResult(chartData);

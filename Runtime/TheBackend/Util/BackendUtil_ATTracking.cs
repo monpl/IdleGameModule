@@ -8,7 +8,7 @@ namespace IdleGameModule.TheBackend
     public partial class BackendUtil
     {
         public Action<ATTrackingStatusBinding.AuthorizationTrackingStatus> OnEndATTrackingEvent;
-        
+
         /// <summary>
         /// iOS14 부터 검사하는 ATTracking 팝업 호출함수
         /// </summary>
@@ -32,7 +32,6 @@ namespace IdleGameModule.TheBackend
                 }
             }
 #endif
-            
         }
 
         private async UniTask WaitForResponse()
@@ -46,7 +45,7 @@ namespace IdleGameModule.TheBackend
                 curTime += Time.deltaTime;
                 await UniTask.Yield();
             }
-            
+
             var status = ATTrackingStatusBinding.GetAuthorizationTrackingStatus();
             OnEndATTrackingEvent?.Invoke(status);
         }

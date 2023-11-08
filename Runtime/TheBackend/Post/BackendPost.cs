@@ -12,7 +12,7 @@ namespace IdleGameModule.TheBackend
         public PostType postType;
         public string title; // 타이틀
         public string content; // 내용
-        public DateTime expirationDate;  // 만료 날짜
+        public DateTime expirationDate; // 만료 날짜
         public DateTime sentDate; // 우편 보낸 날짜
         public string inDate;
         public PostItemData[] postItems;
@@ -23,7 +23,7 @@ namespace IdleGameModule.TheBackend
         public string itemId;
         public int count;
     }
-    
+
     public class BackendPost : Singleton<BackendPost>
     {
         /// <summary>
@@ -33,10 +33,10 @@ namespace IdleGameModule.TheBackend
         public async UniTask<Dictionary<PostType, PostData[]>> GetAllPosts(int limit, bool includeCoupon = false)
         {
             var postDic = new Dictionary<PostType, PostData[]>();
-            
+
             var adminPosts = await GetPosts(PostType.Admin, limit);
             var rankPosts = await GetPosts(PostType.Rank, limit);
-            
+
             postDic.Add(PostType.Admin, adminPosts);
             postDic.Add(PostType.Rank, rankPosts);
 
@@ -71,14 +71,11 @@ namespace IdleGameModule.TheBackend
         public UniTask<PostData[]> GetPosts(PostType postType, int limit)
         {
             var completion = new UniTaskCompletionSource<PostData[]>();
-            
+
             SendQueue.Enqueue(Backend.UPost.GetPostList, postType, limit, bro =>
             {
-                if (!bro.IsSuccess())
-                {
-                    completion.TrySetException(bro.CreateException("Get Post Error"));
+                if (!bro.CheckSuccess(completion, "Get Post Error"))
                     return;
-                }
 
                 completion.TrySetResult(JsonToPostDataArray(postType, bro.GetReturnValuetoJSON()));
             });
@@ -95,21 +92,18 @@ namespace IdleGameModule.TheBackend
         public UniTask ReceiveOne(PostType postType, string inDate)
         {
             var completion = new UniTaskCompletionSource();
-            
+
             SendQueue.Enqueue(Backend.UPost.ReceivePostItem, postType, inDate, bro =>
             {
-                if (!bro.IsSuccess())
-                {
-                    completion.TrySetException(bro.CreateException("Receive One Error"));
+                if (!bro.CheckSuccess(completion, "Receive One Error"))
                     return;
-                }
 
                 completion.TrySetResult();
             });
 
             return completion.Task;
         }
-        
+
         /// <summary>
         /// PostType에 해당하는 우편을 전부 받는다.
         /// </summary>
@@ -142,7 +136,7 @@ namespace IdleGameModule.TheBackend
         {
             var postDataList = new List<PostData>();
             var postListJson = jsonData["postList"];
-            
+
             for (var i = 0; i < postListJson.Count; ++i)
             {
                 var curJson = postListJson[i];

@@ -36,11 +36,8 @@ namespace IdleGameModule.TheBackend
 
             SendQueue.Enqueue(Backend.Notice.NoticeList, bro =>
             {
-                if (!bro.IsSuccess())
-                {
-                    completion.TrySetException(bro.CreateException("Notice Load Error"));
+                if (!bro.CheckSuccess(completion, "Notice Load Error"))
                     return;
-                }
 
                 var json = bro.Rows();
                 var ret = new NoticeData[json.Count];
@@ -81,8 +78,8 @@ namespace IdleGameModule.TheBackend
         public void AddReadList(string uuid)
         {
             var list = GetReadNoticeList();
-            
-            if(!list.Contains(uuid))
+
+            if (!list.Contains(uuid))
                 list.Add(uuid);
 
             SetReadNoticeList(list);
