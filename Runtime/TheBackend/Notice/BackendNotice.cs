@@ -4,7 +4,7 @@ using System.Linq;
 using BackEnd;
 using Cysharp.Threading.Tasks;
 using IdleGameModule.Common;
-using Unity.Plastic.Newtonsoft.Json;
+using Newtonsoft.Json;
 using UnityEngine;
 
 namespace IdleGameModule.TheBackend

@@ -10,6 +10,11 @@
 
 # 프로젝트 세팅
 
+### Newtonsoft
+
+- `manifest.json` 파일에 `"com.unity.nuget.newtonsoft-json": "3.2.1"` 추가
+
+
 ### 뒤끝
 - SendQueueMgr 스크립트를 포함한 오브젝트를 게임 시작 씬에 추가
 
@@ -26,7 +31,7 @@
 ### 차트
 
 - GetAllChartData() 함수를 로딩 중에 불러 적용된 차트 전부 로드
-- 위 함수에서 return한 chartData를 적용 시키면 됨
+- 위 함수에서 리턴한 chartData를 적용 시키면 됨
 
 ### 뽑기
 

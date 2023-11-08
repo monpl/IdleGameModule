@@ -143,11 +143,11 @@ namespace IdleGameModule.TheBackend
                 var newPost = new PostData
                 {
                     postType = postType,
-                    title = curJson.GetStringDirect("title"),
-                    content = curJson.GetStringDirect("content"),
-                    expirationDate = curJson.GetStringDirect("expirationDate").ToDateTime(),
-                    sentDate = curJson.GetStringDirect("sentDate").ToDateTime(),
-                    inDate = curJson.GetStringDirect("inDate"),
+                    title = curJson["title"].ToString(),
+                    content = curJson["content"].ToString(),
+                    expirationDate = curJson["expirationDate"].ToString().ToDateTime(),
+                    sentDate = curJson["sentDate"].ToString().ToDateTime(),
+                    inDate = curJson["inDate"].ToString(),
                 };
 
                 // Items
@@ -160,7 +160,7 @@ namespace IdleGameModule.TheBackend
                     newPost.postItems[j] = new PostItemData()
                     {
                         itemId = curItem["item"]["itemId"].ToString(),
-                        count = curItem.GetIntDirect("itemCount"),
+                        count = int.Parse(curItem["itemCount"].ToString()),
                     };
                 }
 
