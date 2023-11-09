@@ -1,12 +1,10 @@
 # IdleGameModule
-방치형 게임에서 자주 사용 되는 라이브러리들을 쉽게 사용할 수 있게 하는 모듈 
+방치형 게임에서 자주 사용 되는 라이브러리들을 쉽게 사용할 수 있게 하는 모듈
 
 
 # Requirements
 - UniTask (v2.4.1)
 - TheBackend (v5.11.1)
-- iOS Advertising Support (1.0.0)
-- BigDouble (BreakInfinity)
 
 # 프로젝트 세팅
 
@@ -67,7 +65,7 @@
 모든 데이터 집합의 부모가 되는 클래스
 
 **구현 해야 할 항목**
-- 처음 로드 받았을 때 값들을 적용 하는 함수  
+- 처음 로드 받았을 때 값들을 적용 하는 함수
 - 저장할 때 Param 데이터를 return 하는 함수
 
 ### 유틸
@@ -83,7 +81,7 @@
 ### 로그
 
 단순히 로그 타입과 Param을 보내준다.  
-아래 코드를 참고하여 Param을 생성하는 Util을 만들어주면 좀 더 편할듯 
+아래 코드를 참고하여 Param을 생성하는 Util을 만들어주면 좀 더 편할듯
 
 ```
 public static class LogUtil
