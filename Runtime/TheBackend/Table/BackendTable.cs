@@ -39,7 +39,10 @@ namespace IdleGameModule.TheBackend
                 }
 
                 if (modelDic.ContainsKey(tableName))
+                {
                     modelDic[tableName].AcceptFromJson(tableJson);
+                    _myInDateDictionary.TryAdd(tableName, tableJson["inDate"].ToString());
+                }
             }
 
             foreach (var emptyTable in emptyTableList)
