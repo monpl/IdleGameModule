@@ -19,6 +19,27 @@ namespace IdleGameModule.TheBackend
         /// </summary>
         /// <returns></returns>
         public abstract Param GetParam();
+        
+        /// <summary>
+        /// paramKey를 입력하여 원하는 Param만 반환
+        /// </summary>
+        /// <param name="keys"></param>
+        /// <returns></returns>
+        public Param GetParam(params string[] keys)
+        {
+            var allParam = GetParam();
+            var ret = new Param();
+
+            foreach (var key in keys)
+            {
+                if (!allParam.ContainsKey(key))
+                    continue;
+
+                ret.Add(key, allParam[key]);
+            }
+
+            return ret;
+        }
 
         protected string GetElement(JsonData json, string id) => json[id].ToString();
     }
