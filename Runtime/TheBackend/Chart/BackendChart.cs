@@ -90,13 +90,13 @@ namespace IdleGameModule.TheBackend
                     if (!bro.CheckSuccess(completion, $"Failed download chart..{cardData.chartName}"))
                         return;
 
-                    chartData.jsonData = bro.Rows();
+                    chartData.jsonData = bro.FlattenRows();
                     completion.TrySetResult(chartData);
                 });
             }
             else
             {
-                chartData.jsonData = JsonMapper.ToObject(localChartData)["rows"];
+                chartData.jsonData = BackendReturnObject.Flatten(JsonMapper.ToObject(localChartData)["rows"]);
                 completion.TrySetResult(chartData);
             }
 
