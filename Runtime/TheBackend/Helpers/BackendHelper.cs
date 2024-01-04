@@ -94,9 +94,9 @@ namespace IdleGameModule.TheBackend
             };
         }
 
-        public static string GetString(this JsonData jsonData, string key)
+        public static string GetString(this JsonData jsonData, string key, string defaultStr = "")
         {
-            return jsonData[key].ToString();
+            return jsonData.ContainsKey(key) ? jsonData[key].ToString() : defaultStr;
         }
 
         public static bool CheckSuccess(this BackendReturnObject bro, UniTaskCompletionSource source, string exMessage)

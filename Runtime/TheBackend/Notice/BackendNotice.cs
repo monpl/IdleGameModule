@@ -39,7 +39,7 @@ namespace IdleGameModule.TheBackend
                 if (!bro.CheckSuccess(completion, "Notice Load Error"))
                     return;
 
-                var json = bro.Rows();
+                var json = bro.FlattenRows();
                 var ret = new NoticeData[json.Count];
                 var readNoticeList = GetReadNoticeList();
 
