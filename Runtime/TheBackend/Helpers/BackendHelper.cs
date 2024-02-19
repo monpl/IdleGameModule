@@ -9,7 +9,7 @@ namespace IdleGameModule.TheBackend
     /// <summary>
     /// 뒤끝 모듈 관련 헬퍼 함수들
     /// </summary>
-    public static class BackendHelper
+    public static partial class BackendHelper
     {
         /// <summary>
         /// BackendReturnObject를 통해 얻은 Error를 Exception으로 변환시켜주는 함수
@@ -92,11 +92,6 @@ namespace IdleGameModule.TheBackend
                 itemId = rewardJson["rewardItems"]["itemId"].ToString(), // 차트에 아이템 차트와 itemId 컬럼이 있어야함
                 rewardItemCount = int.Parse(rewardJson["rewardItemCount"].ToString()),
             };
-        }
-
-        public static string GetString(this JsonData jsonData, string key, string defaultStr = "")
-        {
-            return jsonData.ContainsKey(key) ? jsonData[key].ToString() : defaultStr;
         }
 
         public static bool CheckSuccess(this BackendReturnObject bro, UniTaskCompletionSource source, string exMessage)
